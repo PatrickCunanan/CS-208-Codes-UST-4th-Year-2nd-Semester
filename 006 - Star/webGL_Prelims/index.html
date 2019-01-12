@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<header>
+		<meta charset="utf-8" />
+		<title>Prelims_Cunanan, Patrick Bryan F.</title>
+		<script src="gl-matrix-min.js"></script>
+		<style type="text/css">
+			.mid{
+				max-height: 1200px;
+				max-width: 1200px;
+				margin: 0 auto;
+			}
+		</style>
+	</header>
+	<body>
+		<br /><br />
+		<div  class="mid">
+			<canvas id="renderCanvas" width="1200" height="600" ></canvas>
+			<script src="main.js"></script>	
+		</div>
+		
+
+		<script type="vertexShader" id="vertexShader">
+			#version 300 es
+			in vec3 position;
+			in vec4 color;
+			out vec4 fcolor;
+
+			uniform vec4 colorsUniformArray[3];
+			uniform vec3 offsets;
+
+			uniform mat4 modelMatrix;
+			uniform mat4 viewMatrix;
+			uniform mat4 projectionMatrix;
+			uniform float time;
+
+			void main(){
+				gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position.x + offsets[gl_InstanceID], position.y, position.z, 1.2);
+				fcolor = vec4(sin(time)) * colorsUniformArray[(gl_InstanceID + gl_VertexID) % 2], cos(time) * colorsUniformArray[(gl_InstanceID + gl_VertexID) % 2], cos(time) *colorsUniformArray[(gl_InstanceID + gl_VertexID) % 2], 0.8;
+			}
+		</script>
+
+		<script type="fragmentShader" id="fragmentShader">
+			#version 300 es
+			precision mediump float;
+			in vec4 fcolor;
+			out vec4 finalColor;
+
+			void main(){
+				finalColor = fcolor;
+			}
+		</script>
+	</body>
+</html>
